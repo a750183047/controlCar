@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:orientation="vertical"
+    android:weightSum="1"
+    android:background="#000">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/newDevice" />
+
+    <ListView
+        android:id="@+id/newDevices"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:stackFromBottom="true"
+        android:layout_weight="0.44">
+    </ListView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pairedDevice" />
+
+    <ListView
+        android:id="@+id/pairedDevices"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:stackFromBottom="true"
+        android:layout_weight="0.55">
+    </ListView>
+
+    <Button
+        android:id="@+id/scanButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/scanNew" />
+
+</LinearLayout>

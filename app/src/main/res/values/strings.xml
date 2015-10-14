@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="connectbtntext">连接智能家居</string>
+    <string name="texttest">未连接</string>
+    <string name="title_name">智能E家</string>
+    <string name="doortext">正门</string>
+    <string name="windowtext">窗户</string>
+    <string name="lighttext">灯光</string>
+    <string name="sensortext">传感器</string>
+    <string name="door1text">大门</string>
+    <string name="windowbtn">窗户</string>
+    <string name="curtainbtn">窗帘</string>
+    <string name="light_mesg">正在完善中。。。。</string>
+    <string name="sensor1_text">光强传感器</string>
+    <string name="sensor1_data">无数据</string>
+    <!-- 来自doorfragment布局文件的变量 -->
+    <string name="doortextname">当前大门状态 ：</string>
+    <string name="doorstatetext">开</string>
+    <!-- 来自windowfragmetn布局文件的变量 -->
+    <string name="windowstatetext">窗户状态:</string>
+    <string name="windowstatedatatext">开</string>
+    <string name="curtaintext">窗帘状态:</string>
+    <string name="curtainstatetext">开</string>
+    <!-- 主菜单相关 -->
+    <string name="app_name">Android蓝牙串口助手</string>
+    <string name="paried_title">已配对设备</string>
+    <string name="connected_device">已连接设备：</string>
+    <string name="tx_history">发送历史:</string>
+    <string name="rx_history">接收历史:</string>
+    <string name="sendButton">发送</string>
+    <string name="nodevice">未连接设备</string>
+    <string name="clearTx">清空发送数据</string>
+    <string name="clearRx">清空接收数据</string>
+    <string name="disconnect">断开连接</string>
+    <string name="title_connecting">连接中...</string>
+    <string name="title_connected_to">已连接: </string>
+    <string name="title_not_connected">未连接设备</string>
+    <string name="clearALL">清空</string>
+    <!-- 菜单 -->
+    <string name="scan">搜索</string>
+    <string name="discoverable">设备可检测</string>
+    <string name="about">关于</string>
+    <string name="exit">退出</string>
+    <!-- 搜索界面 -->
+    <string name="noNewDevice">没有发现新设备</string>
+    <string name="noPairedDevice">没有配对的设备</string>
+    <string name="scanning">搜索中...</string>
+    <string name="select_device">选择设备配对</string>
+    <string name="pairedDevice">已配对的设备</string>
+    <string name="newDevice">新搜索的设备</string>
+    <string name="scanNew">搜索新设备</string>
+    <!-- about菜单 -->
+    <string name="app_about">关于android蓝牙串口助手：
+          	本蓝牙串口调试程序方便手机与蓝牙串口设备进行通信。使用之前因先将手机与设备连接，
+          	连接之后就可以像电脑端的串口调试助手一样使用了。
+          	本软件由小林编写：http://www.14blog.com</string>
+
+</resources>
