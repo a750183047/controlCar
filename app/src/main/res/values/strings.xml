@@ -25,7 +25,7 @@
     <string name="curtaintext">窗帘状态:</string>
     <string name="curtainstatetext">开</string>
     <!-- 主菜单相关 -->
-    <string name="app_name">Android蓝牙串口助手</string>
+    <string name="app_name">蓝牙摇杆智能车遥控</string>
     <string name="paried_title">已配对设备</string>
     <string name="connected_device">已连接设备：</string>
     <string name="tx_history">发送历史:</string>
