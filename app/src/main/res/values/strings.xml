@@ -58,4 +58,9 @@
           	连接之后就可以像电脑端的串口调试助手一样使用了。
           	本软件由小林编写：http://www.14blog.com</string>
 
+    <string name="warning">
+              警        告:
+        请先进入手机设置中配对蓝牙设备，然后再进入程序连接。
+    </string>
+
 </resources>

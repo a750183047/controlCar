@@ -2,8 +2,10 @@ package yan.com.ctrl.bluetooth.bluetooth;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,7 +20,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +49,7 @@ public class BluetoothComm extends FragmentActivity {
 	public static final int MESSAGE_TOAST = 5;
 
 	private static boolean isLineOk = true;
+	private boolean isBtLineOk = false; //用来判断蓝牙是否连接上了
 
 	// Key names received from the BluetoothChatService Handler
 	public static final String DEVICE_NAME = "device_name";
@@ -55,6 +60,8 @@ public class BluetoothComm extends FragmentActivity {
 	private EditText txEdit;
 	private EditText rxEdit;
 	private EditText inputEdit;
+
+	private Switch switchBt;
 	//连接的设备
 	private TextView connectDevices;
 	// 发送按键
@@ -80,45 +87,64 @@ public class BluetoothComm extends FragmentActivity {
 	private Button btn_send;
 	private TextView receive_message;
 
+	private Rocker rocker;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.e("BluetoothComm", "-ON CREATE-");
-
-
-		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main);
-		// 获取控件
-		//sendButton = (Button) findViewById(R.id.sendButton);
-		//sendButton.setOnClickListener(new btnClickedListener());
+		Log.e("BluetoothComm", "-ON CREATE-");
+		//setContentView(R.layout.main);
+		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		//clearAll = (Button) findViewById(R.id.clearALL);
-		//clearAll.setOnClickListener(new btnClickedListener());
-		//inputEdit = (EditText) findViewById(R.id.inputEdit);
+		// 获取控件
 		connectDevices = (TextView) findViewById(R.id.connected_device);
 		button = (Button) findViewById(R.id.btn_sou);
 		btn_send = (Button) findViewById(R.id.btn_send);
+		switchBt = (Switch) findViewById(R.id.switch_bt);
 		receive_message = (TextView) findViewById(R.id.receive_message);
 		// 获得本地蓝牙设备
 		bluetooth = BluetoothAdapter.getDefaultAdapter();
-
+		showWarning();
 		//获取摇杆对象
-		Rocker rocker  = (Rocker) findViewById(R.id.rudder);
+		rocker  = (Rocker) findViewById(R.id.rudder);
+
 		Bitmap rocker_bg = BitmapFactory.decodeResource(getResources(), R.drawable.rocker_bg1);
 		Bitmap rocker_ctrl = BitmapFactory.decodeResource(getResources(),R.drawable.rocker_ctrl);
 		rocker.setRockerBackground(rocker_bg);
 		rocker.setRockerCtrl(rocker_ctrl);
 
+		rocker.setRudderListener(new Rocker.RudderListener() {
+			@Override
+			public void onSteeringWheelChanged(int action, int angle) {
+				if (action == Rocker.ACTION_RUDDER) {
+					//status.setText("角度：" + angle);
+					if (isBtLineOk) {
+						String angles = String.valueOf(angle);
+						sendMessage(angles + "\r\n");
+					}
 
-		if (bluetooth == null) {// 设备没有蓝牙设备
-			Toast.makeText(this, "没有找到蓝牙适配器", Toast.LENGTH_LONG).show();
-			finish();
-			return;
-		}
+				}
+			}
+		});
+
+
+		switchBt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if (isChecked) {
+					isBtLineOk = true;
+				} else {
+					isBtLineOk = false;
+				}
+			}
+		});
+
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				Log.e("Blue", "点击了搜索");
 				Intent serverIntent = new Intent(BluetoothComm.this, ScanDeviceActivity.class);
 				startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
 			}
@@ -131,20 +157,19 @@ public class BluetoothComm extends FragmentActivity {
 			}
 		});
 
-		rocker.setRudderListener(new Rocker.RudderListener() {
-			@Override
-			public void onSteeringWheelChanged(int action, int angle) {
-				if (action == Rocker.ACTION_RUDDER) {
-					//status.setText("角度：" + angle);
-					String angles = String.valueOf(angle);
-					sendMessage(angles+"\r\n");
-				}
-			}
-		});
+		if (bluetooth == null) {// 设备没有蓝牙设备
+			Toast.makeText(this, "没有找到蓝牙适配器", Toast.LENGTH_LONG).show();
+			finish();
+			return;
+		}
+
+
+
       //  resources = getResources();
       //  InitWidth();
       //  InitTextView();
       //  InitViewPager();
+
 
 	}
 
@@ -167,6 +192,20 @@ public class BluetoothComm extends FragmentActivity {
 	@Override
 	protected synchronized void onResume() {
 		super.onResume();
+		//setContentView(R.layout.main);
+
+		//在这个方法中调用画图对象的设置方法
+
+
+
+
+
+
+
+
+
+
+
 		Log.e("BluetoothComm","-ON RESUME-");
 		if (mCommService != null) {
 			// Only if the state is STATE_NONE, do we know that we haven't
@@ -360,6 +399,7 @@ public class BluetoothComm extends FragmentActivity {
 			case MESSAGE_DEVICE_NAME:
 				// save the connected device's name
 				mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
+				switchBt.setChecked(true);
 				Toast.makeText(getApplicationContext(),
 						"连接到" + mConnectedDeviceName,
 						Toast.LENGTH_SHORT).show();
@@ -381,6 +421,23 @@ public class BluetoothComm extends FragmentActivity {
 	}
 	public void setIsLineOk(boolean isLineOk){
 		  this.isLineOk = isLineOk;
+	}
+
+
+	private void showWarning(){
+		AlertDialog.Builder dialog = new AlertDialog.Builder(BluetoothComm.this);
+		dialog.setTitle("警    告");
+		dialog.setMessage("请先连接上设备后再开启app");
+		dialog.setCancelable(false);
+		dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Intent intent = new Intent(BluetoothComm.this, ScanDeviceActivity.class);
+				startActivity(intent);
+
+			}
+		});
+		dialog.show();
 	}
 
 }

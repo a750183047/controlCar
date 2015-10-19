@@ -34,6 +34,8 @@ public class Rocker extends SurfaceView implements Runnable,SurfaceHolder,Surfac
     private Runnable runnable;
     ////
 
+    private boolean isRun = true;                   //控制线程的运行和关闭
+
     private Paint mPaint;
 
     private Point mRockerPosition;                  //摇杆位置
@@ -67,12 +69,12 @@ public class Rocker extends SurfaceView implements Runnable,SurfaceHolder,Surfac
         mHolder.setFormat(PixelFormat.TRANSPARENT);     //设置背景透明
 
 
-        //画图线程  要执行的动作
+        //画图线程  要执行的动作   使用者中方法可以避免线程的重复开启
         runnable = new Runnable() {
             @Override
             public void run() {
                 Canvas canvas =null;
-                while(!isStop){
+                while(isRun){
                     try{
 
                         canvas = mHolder.lockCanvas();
@@ -144,6 +146,7 @@ public class Rocker extends SurfaceView implements Runnable,SurfaceHolder,Surfac
     public void surfaceCreated(SurfaceHolder holder) {
         //确定中心点
         Data data = new Data();
+        isRun = true;
 
         Log.e("Thread"," "+data.getisok());
         int width = this.getWidth();
@@ -152,17 +155,7 @@ public class Rocker extends SurfaceView implements Runnable,SurfaceHolder,Surfac
         mRockerPosition = new Point(mCtrlPoint);
        // mThread.start();
 
-        if(true){
-          //  new Thread(runnable).start();
-       //
-        }
-        //
-
-      //  Log.e("Wh", width + ":" + height);
-
-
-           mThread.start();
-
+        new Thread(runnable).start();       // 开启画图线程
 
 
     }
@@ -170,11 +163,13 @@ public class Rocker extends SurfaceView implements Runnable,SurfaceHolder,Surfac
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
+        Log.e("Surface","surfaceChanged");
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         isStop = true;
+        isRun = false;
         Log.e("Thread","画图停止了");
 
     }
@@ -182,7 +177,7 @@ public class Rocker extends SurfaceView implements Runnable,SurfaceHolder,Surfac
     @Override
     public void run() {
         Canvas canvas =null;
-        while(!isStop){
+        while(isRun){
             try{
 
                 canvas = mHolder.lockCanvas();
